@@ -36,13 +36,16 @@ namespace Generic
             return dict[guid];
         }
 
-        public List<Tuple<Guid, object>> GetAll(Type type)
+        public List<Tuple<Guid, object>> GetAll(Type type) 
         {
             List<Tuple<Guid, object>> list = new List<Tuple<Guid, object>>();
-            foreach (var v in dictCollection[type])
+            if (dictCollection.ContainsKey(type))
             {
-                Tuple<Guid, object> tp = new Tuple<Guid, object>(v, dict[v]);
-                list.Add(tp);
+                foreach (var v in dictCollection[type])
+                {
+                    Tuple<Guid, object> tp = new Tuple<Guid, object>(v, dict[v]);
+                    list.Add(tp);
+                }
             }
             return list;
         }
