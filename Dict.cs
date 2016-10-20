@@ -8,46 +8,43 @@ namespace Generic
 {
     class Dict
     {
-        Dictionary<Guid, object> dict;
-        Dictionary<Type, List<Guid>> dictCollection;
+        Dictionary<Type, Dictionary<Guid, object>> dict;
 
         public Dict()
         {
-            dict = new Dictionary<Guid, object>();
-            dictCollection = new Dictionary<Type, List<Guid>>();
+            dict = new Dictionary<Type, Dictionary<Guid, object>>();
         }
 
-        public T Add<T>(T item)
+        public T Add<T>() where T : new()
         {
+            T item = new T();
             Guid guid = Guid.NewGuid();
-            dict[guid] = item;
-
-            if (!dictCollection.ContainsKey(item.GetType()))
+            if (!dict.ContainsKey(item.GetType()))
             {
-                dictCollection.Add(item.GetType(), new List<Guid>());
+                dict.Add(item.GetType(), new Dictionary<Guid, object>());
             }
-
-            dictCollection[item.GetType()].Add(guid);
+            dict[item.GetType()].Add(guid, item);
             return item;
         }
 
-        public object GetObjByGuid(Guid guid)
+        public object GetObj(Type type, Guid guid)
         {
-            return dict[guid];
+            if (dict.ContainsKey(type))
+            {
+                if (dict[type].ContainsKey(guid))
+                    return dict[type][guid];
+            }
+            return null;
+            
         }
 
-        public List<Tuple<Guid, object>> GetAll(Type type) 
+        public Dictionary<Guid, object> GetAll(Type type) 
         {
-            List<Tuple<Guid, object>> list = new List<Tuple<Guid, object>>();
-            if (dictCollection.ContainsKey(type))
+            if (dict.ContainsKey(type))
             {
-                foreach (var v in dictCollection[type])
-                {
-                    Tuple<Guid, object> tp = new Tuple<Guid, object>(v, dict[v]);
-                    list.Add(tp);
-                }
+                return dict[type];
             }
-            return list;
+            return null;
         }
     }
 }

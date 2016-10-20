@@ -11,23 +11,30 @@ namespace Generic
         static void Main(string[] args)
         {
             Dict test = new Dict();
-            test.Add(new Car());
-            test.Add(new Car());
-            test.Add(new Car2());
-            test.Add(new Car());
-            test.Add(new Car2());
+            test.Add<Car>();
+            test.Add<Car>();
+            test.Add<Car2>();
+            test.Add<Car>();
+            test.Add<Car2>();
 
             Car c1 = new Car();
             Car2 c2 = new Car2();
-            foreach (var v in test.GetAll(c2.GetType()))
+
+            var y = test.GetAll(c1.GetType());
+            Guid  k = new Guid();
+            foreach (var v in y)
             {
-                Console.WriteLine(v.Item1 + " " + v.Item2);
+                Console.WriteLine(v.Key + " " + v.Value);
+                k = v.Key;
+            }
+            Console.WriteLine(test.GetObj(c1.GetType(), k));
+            var y2 = test.GetAll(c2.GetType());
+            Console.WriteLine();
+            foreach (var v in y2)
+            {
+                Console.WriteLine(v.Key + " " + v.Value);
             }
 
-            foreach (var v in test.GetAll(c1.GetType()))
-            {
-                Console.WriteLine(v.Item1 + " " + v.Item2);
-            }
         }
 
         class Car
