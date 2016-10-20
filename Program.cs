@@ -20,15 +20,15 @@ namespace Generic
             Car c1 = new Car();
             Car2 c2 = new Car2();
 
-            var y = test.GetAll(c1.GetType());
+            var y = test.GetAll<Car>();
             Guid  k = new Guid();
             foreach (var v in y)
             {
                 Console.WriteLine(v.Key + " " + v.Value);
                 k = v.Key;
             }
-            Console.WriteLine(test.GetObj(c1.GetType(), k));
-            var y2 = test.GetAll(c2.GetType());
+            Console.WriteLine(test.GetObj<Car>(k));
+            var y2 = test.GetAll<Car2>();
             Console.WriteLine();
             foreach (var v in y2)
             {

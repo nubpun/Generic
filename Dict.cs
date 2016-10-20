@@ -27,19 +27,21 @@ namespace Generic
             return item;
         }
 
-        public object GetObj(Type type, Guid guid)
+        public T GetObj<T>(Guid guid) where T : new()
         {
+            Type type = (new T()).GetType();
             if (dict.ContainsKey(type))
             {
                 if (dict[type].ContainsKey(guid))
-                    return dict[type][guid];
+                    return (T)dict[type][guid];
             }
-            return null;
+            return default(T);
             
         }
 
-        public Dictionary<Guid, object> GetAll(Type type) 
+        public Dictionary<Guid, object> GetAll<T>() where T:new() 
         {
+            Type type = (new T()).GetType();
             if (dict.ContainsKey(type))
             {
                 return dict[type];
